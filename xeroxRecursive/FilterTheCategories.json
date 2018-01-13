@@ -1,0 +1,84 @@
+[
+  {
+    "id": "DIGITAL_PRESSES",
+    "sub_categories": [
+      {
+        "id": "BW_PRODUCTION",
+        "sub_categories": [],
+        "products": [
+          "D136"
+        ]
+      },
+      {
+        "id": "COLOR_PRODUCTION",
+        "sub_categories": [],
+        "products": [
+          "800_1000_DCP",
+          "C60_C70_DCP"
+        ]
+      },
+      {
+        "id": "BW_TRANSACTIONAL",
+        "sub_categories": [],
+        "products": [
+          "NV_200_288_MX",
+          "NV_144MX",
+          "DT_120MX"
+        ]
+      }
+    ],
+    "products": []
+  },
+  {
+    "id": "PRINT",
+    "sub_categories": [
+      {
+        "id": "PRINT_COLOR",
+        "sub_categories": [
+          {
+            "id": "PRINT_COLOR_LETTER",
+            "products": [
+              "PHASER_6510",
+              "PHASER_1234",
+              "VERSALINK_C400"
+            ]
+          },
+          {
+            "id": "PRINT_COLOR_TABLOID",
+            "products": [
+              "VERSALINK_C7000"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "PRINT_BW",
+        "sub_categories": [
+          {
+            "id": "PRINT_BW_LETTER",
+            "products": [
+              "PHASER_3260",
+              "PHASER_3610"
+            ]
+          },
+          {
+            "id": "PRINT_BW_TABLOID",
+            "products": [
+              "PHASER_5550"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ALL_DESKTOP",
+    "products": [
+      "PHASER_6510",
+      "PHASER_1234",
+      "VERSALINK_C400",
+      "PHASER_3260",
+      "PHASER_3610"
+    ]
+  }
+]
