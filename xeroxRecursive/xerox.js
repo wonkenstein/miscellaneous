@@ -1,21 +1,31 @@
 
 const productData = getData()
-console.log('productData', productData)
+const productToFind = 'PHASER_1234'
+console.log('productData:', productData)
+console.log('productToFind:', productToFind)
 console.log('======')
 
-const productCategories = findProduct(productData, 'phaser 1234', [])
+const productCategories = findProductCategories(productData, productToFind, [])
 console.log('productCategories:', productCategories)
+
+// with breadcrumbs for categories
+const productCategoriesBreadcrumb = findProductCategoriesBreadcrumb(productData, productToFind, [])
+console.log('productCategoriesBreadcrumb:', productCategoriesBreadcrumb)
 console.log('======')
 
-const productCategories2 = findProduct2(productData, 'phaser 1234')
-console.log('productCategories2:', productCategories2)
+
+const productCategoriesAlt = findProductCategoriesAlternative(productData, productToFind)
+console.log('productCategoriesAlt:', productCategoriesAlt)
+const flattenedCategories = flattenArray(productCategoriesAlt, [])
+console.log('flattenedCategories:', flattenedCategories)
 console.log('======')
 
-const flattenedCategories = flattenArray(productCategories2, [])
-console.log('flattened:', flattenedCategories)
+const f = flattenArray(findProductCategoriesAlternative(productData, productToFind), [])
+console.log('f:', f)
 
 
-function findProduct(items, productToFind, categories) {
+// return array of categories that productToFind appears in
+function findProductCategories(items, productToFind, categories) {
   items.map(item => {
     if (item.products) {
       // check for product in array
@@ -23,28 +33,55 @@ function findProduct(items, productToFind, categories) {
         categories.push(item.id)
       }
     }
-    else if (item.sub_categories) {
+
+    if (item.sub_categories) {
       // recursion
-      return findProduct(item.sub_categories, productToFind, categories)
+      return findProductCategories(item.sub_categories, productToFind, categories)
     }
   })
 
   return categories
 }
 
-function findProduct2(items, productToFind) {
+// return array of categories breadcrumb that productToFind appears in
+function findProductCategoriesBreadcrumb(items, productToFind, categories, trail='') {
+  const seperator = '--'
+  items.map(item => {
+    let breadcrumb = trail + item.id
+    if (item.products) {
+      // check for product in array
+      if (item.products.indexOf(productToFind) > -1) {
+        categories.push(trail + item.id + '')
+      }
+    }
+
+    if (item.sub_categories) {
+      // recursion
+      breadcrumb += seperator
+      return findProductCategoriesBreadcrumb(item.sub_categories, productToFind, categories, breadcrumb)
+    }
+  })
+
+  return categories
+}
+
+// return array with category if productToFind is in that node, undefined if not,
+// array structure mimics the items passed in
+function findProductCategoriesAlternative(items, productToFind) {
   return items.map(item => {
     if (item.products) {
       if (item.products.indexOf(productToFind) > -1) {
         return item.id
       }
     }
-    else if (item.sub_categories) {
-      return findProduct2(item.sub_categories, productToFind)
+
+    if (item.sub_categories) {
+      return findProductCategoriesAlternative(item.sub_categories, productToFind)
     }
   })
 }
 
+// flatten the array returned by findProductCategoriesAlternative so we get an array of the id's
 function flattenArray(data, flattened) {
   data.map(item => {
     if (Array.isArray(item)) {
@@ -63,68 +100,71 @@ function flattenArray(data, flattened) {
 function getData() {
   return [
     {
-      id: 'item1',
-      sub_categories: [
+      "id": "DIGITAL_PRESSES",
+      "sub_categories": [
         {
-          id: 'item1.1',
-          products: [
-            'some product',
-            'phaser 1234'
+          "id": "BW_PRODUCTION",
+          "sub_categories": [],
+          "products": [
+            "D136"
           ]
         },
         {
-          id: 'item1.2',
-          products: [
-            'some product',
-            'phaser 1234'
+          "id": "COLOR_PRODUCTION",
+          "sub_categories": [],
+          "products": [
+            "800_1000_DCP",
+            "C60_C70_DCP"
           ]
         },
         {
-          id: 'item1.3',
-          sub_categories: [
+          "id": "BW_TRANSACTIONAL",
+          "sub_categories": [],
+          "products": [
+            "NV_200_288_MX",
+            "NV_144MX",
+            "DT_120MX"
+          ]
+        }
+      ],
+      "products": []
+    },
+    {
+      "id": "PRINT",
+      "sub_categories": [
+        {
+          "id": "PRINT_COLOR",
+          "sub_categories": [
             {
-              id: 'item1.3.1',
-              products: [
-                'some product',
-                // 'phaser 1234'
+              "id": "PRINT_COLOR_LETTER",
+              "products": [
+                "PHASER_6510",
+                "PHASER_1234",
+                "VERSALINK_C400"
               ]
             },
             {
-              id: 'item1.3.2',
-              products: [
-                'some product',
-                'phaser 1234'
+              "id": "PRINT_COLOR_TABLOID",
+              "products": [
+                "VERSALINK_C7000"
               ]
             }
           ]
-        }
-      ]
-    },
-    {
-      id: 'item2',
-      sub_categories: [
-        {
-          id: 'item2.1',
-          products: [
-            'some product',
-            'phaser 1234'
-          ]
         },
         {
-          id: 'item2.2',
-          products: [
-            'some product',
-            'booboo'
-          ]
-        },
-        {
-          id: 'item2.3',
-          sub_categories: [
+          "id": "PRINT_BW",
+          "sub_categories": [
             {
-              id: 'item2.3.1',
-              products: [
-                'some product',
-                'phaser 1234'
+              "id": "PRINT_BW_LETTER",
+              "products": [
+                "PHASER_3260",
+                "PHASER_3610"
+              ]
+            },
+            {
+              "id": "PRINT_BW_TABLOID",
+              "products": [
+                "PHASER_5550"
               ]
             }
           ]
@@ -132,10 +172,13 @@ function getData() {
       ]
     },
     {
-      id: 'item3',
-      products: [
-        'some product',
-        'phaser 1234'
+      "id": "ALL_DESKTOP",
+      "products": [
+        "PHASER_6510",
+        "PHASER_1234",
+        "VERSALINK_C400",
+        "PHASER_3260",
+        "PHASER_3610"
       ]
     }
   ]
